@@ -68,11 +68,21 @@ function performPrint (iframeElement, params) {
 }
 
 function loadIframeImages (images) {
+  /**
   const promises = images.map(image => {
     if (image.src && image.src !== window.location.href) {
       return loadIframeImage(image)
     }
   })
+  */
+  // 此处会触发babel ex6->es5编译的bug 
+  var promises = []
+  for(var i=0;i<images.length;i++){
+    var image = images[i]
+    if (image.src && image.src !== window.location.href) {
+      promises.push(loadIframeImage(image))
+    }
+  }
 
   return Promise.all(promises)
 }
